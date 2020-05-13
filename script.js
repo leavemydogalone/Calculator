@@ -1,3 +1,15 @@
+let displayValue = '';
+() => display.textContent = displayValue;
+
+const display = document.querySelector("#inputDisplay");
+const calcNumbers = document.querySelectorAll('.number');
+const calcOperators = document.querySelectorAll('.operator');
+let chosenOperator = '';
+const calcEquals = document.querySelector('#equals');
+const calcClear = document.querySelector('#clear');
+let storedNumber = '';
+
+// basics arithmetic functions
 function add(a, b) {
     return a + b;
 }
@@ -14,6 +26,8 @@ function divide(a, b) {
     return a / b;
 }
 
+// function to be called upon later to choose which function to perform based on 
+// chosen operator
 function operator (operator, num1, num2) {
     switch (operator) {
         case "+":
@@ -27,18 +41,8 @@ function operator (operator, num1, num2) {
             
     }
 }
-let displayValue = '';
-() => display.textContent = displayValue;
 
-const display = document.querySelector("#inputDisplay");
-const calcNumbers = document.querySelectorAll('.number');
-const calcOperators = document.querySelectorAll('.operator');
-let chosenOperator = '';
-const calcEquals = document.querySelector('#equals');
-const calcClear = document.querySelector('#clear');
-let storedNumber = '';
-
-
+// clears all values. attached to clear button
 calcClear.addEventListener('click', (e) => {
     displayValue= '';
     display.textContent = '';
@@ -46,6 +50,8 @@ calcClear.addEventListener('click', (e) => {
     storedNumber = '';
 });
 
+// chooses the appropriate operator based on the id of the button clicked
+// stores the value previously on the screen to the variable storedNumber 
 calcOperators.forEach((button) => {
     button.addEventListener('click', (e) => {
         chosenOperator = button.id;
@@ -54,27 +60,30 @@ calcOperators.forEach((button) => {
     });
 });
 
+// does nothing if there is no chosen operator.
+// runs the function and displays the text in the display
 calcEquals.addEventListener('click', () => {
-   display.textContent = operator(chosenOperator, parseInt(storedNumber), parseInt(displayValue));
-   displayValue = display.textContent;
-   chosenOperator = '';
+   if (!chosenOperator) return;
+    display.textContent = operator(chosenOperator, parseInt(storedNumber), parseInt(displayValue));
+//  display.textContent = storedNumber;
+    displayValue = display.textContent;
+    chosenOperator = '';
 });
 
 
 calcNumbers.forEach((button) => {
     button.addEventListener('click', (e) => {
-            display.textContent += button.id;
-            displayValue = display.textContent;
-            if (chosenOperator){
-                storedNumber = operator(chosenOperator, parseInt(storedNumber), parseInt(displayValue));
-                chosenOperator = '';
-            }
+        // if (chosenOperator){
+            // storedNumber = operator(chosenOperator, parseInt(storedNumber), parseInt(displayValue));
+            // chosenOperator = '';
+            // display.textContent = button.id;
+            // displayValue = display.textContent;
+            // return;
+        // }
+        display.textContent += button.id;
+        displayValue = display.textContent;
+            
         });
 });
-// add a check to see if there is an oprator and it will clear the display and store
-// the previous value as storedNumber
 
 
-//     displayValue = operator(button.id, parseInt(displayValue), 3);
-//     display.textContent = displayValue;
-// chosenOperator = '';
